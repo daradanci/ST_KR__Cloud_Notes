@@ -25,6 +25,7 @@ function LoginPage() {
     const dispatch = useDispatch();
     const { userStatus} = useSelector((state) => state.userStatus);
     const { userError} = useSelector((state) => state.userError);
+    const {alertOpen} = useSelector((state) => state.alertOpen);
 
 
     const handleSubmit = async(event) => {
@@ -161,7 +162,11 @@ function LoginPage() {
                             {"Нет аккаунта."}
                     </Link>
                 </Grid>
+
+                {alertOpen?
                 <AlertDialog {...alertMessage}/>
+                : <></>
+                }
 
 
 
