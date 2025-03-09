@@ -29,15 +29,21 @@ function Note(item) {
         }
         updateColor()
     }, [currentNote])
-    const deleteHandler=async ()=>{
-        // await dispatch(setDeletingNote({title:item.title, content:item.content, date:item.date}))
-        // await dispatch(openDeleteDialog())
-
-        await dispatch(deleteNote({user:username, title:item.title}))
-            .then(async()=>{
-                await dispatch(getUserNotes(userId))
-            })
-    }
+    const deleteHandler = async () => {
+        if (!userId) {
+            console.error("❌ Ошибка: userId отсутствует, не могу удалить заметку");
+            return;
+        }
+    
+        try {
+            await dispatch(deleteNote({ userId, title: item.title }));
+            await dispatch(getUserNotes(userId)); 
+            console.log(`✅ Удалена заметка: ${item.title}`);
+        } catch (error) {
+            console.error("❌ Ошибка при удалении заметки:", error);
+        }
+    };
+    
     return(
 
         <Box sx={{ display: 'flex' }}>

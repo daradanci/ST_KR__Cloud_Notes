@@ -34,7 +34,7 @@ function Column1() {
 
                 <Grid element xs={12}>
                     <Button variant={"contained"} onClick={quit}
-                                                    href="/"
+                                                    href="/ST_KR__Cloud_Notes/"
                     sx={{backgroundColor:'button.exit.main', color:'button.exit.text',
                         width:'100%', borderRadius:'0px', height:'13vh', fontSize:'20px',
                     ":hover":{

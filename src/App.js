@@ -10,16 +10,10 @@ import {Container, CssBaseline, Paper, Typography} from "@mui/material";
 
 function App() {
   return (
-      // <DocumentTitle title={'Notes'}>
-        <BrowserRouter basename="/" >
+        <BrowserRouter basename="/ST_KR__Cloud_Notes" >
             <Container
                 maxWidth={false} disableGutters
-                // sx={{width:'100%',border:"2px solid gray"}}
-
             >
-
-                {/*<MainTitle/>*/}
-
                 <Routes>
                     <Route exact path={'/'} element={<UnauthorizedPage/>}/>
                     <Route exact path={'/login'} element={<LoginPage/>}/>
@@ -31,7 +25,6 @@ function App() {
 
 
         </BrowserRouter>
-      // </DocumentTitle>
   );
 }
 

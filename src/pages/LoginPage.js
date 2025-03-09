@@ -159,7 +159,7 @@ function LoginPage() {
                 </Button>
 
 
-                    <Link variant="body2" href="/register"
+                    <Link variant="body2" href={process.env.PUBLIC_URL + "/register"}
                     sx={{color:'white'}}
                     >
                             {"Нет аккаунта."}

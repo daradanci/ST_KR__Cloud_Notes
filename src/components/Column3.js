@@ -3,7 +3,7 @@ import {Button, Container, CssBaseline, Grid} from "@mui/material";
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {addNote, editNote, getUserNotes, setCurrentNote, setNotes} from "../store/NoteSlice";
-import {exit, getUser, refreshUser, updateUsername} from "../store/UserSlice";
+import {exit, getUser,} from "../store/UserSlice";
 import DeleteDialog from "./DeleteDialog";
 
 
@@ -18,56 +18,55 @@ function Column3() {
     const {notes} = useSelector((state) => state.notes);
     const {userId} = useSelector((state) => state.userId);
     const {username} = useSelector((state) => state.username);
-    const {deletingNote} = useSelector((state) => state.deletingNote);
-    const {oldTitle} = useSelector((state) => state.oldTitle);
     useEffect(() => {
         const fetchData = async () => {
-            // await dispatch(updateUsername(()=>{
-            //     if(localStorage.getItem('username')) {
-            //         return localStorage.getItem('username')
-            //     } else return ""
-            // }))
-            // await dispatch(setNotes(()=>{
-            //     if(localStorage.getItem('notes')){
-            //         return JSON.parse(localStorage.getItem('notes'))
-            //     } else return []
-            // }))
-            await dispatch(refreshUser())
-                .then(async ()=>{
-                    await dispatch(getUser())
-                    .then(async(res)=>{
-                        await dispatch(getUserNotes(localStorage.getItem('userId')))
-                            // .then(async(res)=>{
-                            //     if(notes===[]){
-                            //     }
-                            // })
-                    //    res.payload.data.id
-                    })
-                    // .catch(async (err)=>{
-                    //     if (localStorage.getItem(userId)!==null){
-                    //         await dispatch(getUserNotes(localStorage.getItem(userId)))
-                    //
-                    //     }
-                    // })
-                })
-
+            try {
+                const userResponse = await dispatch(getUser());
+    
+                // Ждём userId
+                const fetchedUserId = userResponse.payload?.id || userId;
+    
+                if (fetchedUserId) {
+                    console.log(`📌 Загружаем заметки для userId: ${fetchedUserId}`);
+                    await dispatch(getUserNotes(fetchedUserId));
+                } else {
+                    console.error("❌ Ошибка: userId не найден");
+                }
+            } catch (error) {
+                console.error("❌ Ошибка при загрузке данных:", error);
+            }
+        };
+    
+        fetchData();
+    }, [dispatch]);
+    
+    
+    const handleAdd = async () => {
+        if (!userId) {
+            console.error("❌ Ошибка: userId отсутствует, не могу добавить заметку");
+            return;
         }
-        fetchData()
-    }, [])
-    const handleAdd=async (event)=>{
-        let updatedCurrentNote={title:`new_note`, content:'', date:'', user:username}
+    
+        const now = new Date().toLocaleString();
+    
+        let newNote = { 
+            title: "new_note", 
+            content: "", 
+            date: now, 
+            userId 
+        };
+    
+        try {
+            await dispatch(addNote(newNote));
+    
+            console.log(`📌 Заметка добавлена:`, newNote);
+            await dispatch(getUserNotes(userId));
+        } catch (error) {
+            console.error("❌ Ошибка при добавлении заметки:", error);
+        }
+    };
+    
 
-        await dispatch(refreshUser())
-            .then(async()=>{
-                await dispatch(addNote(updatedCurrentNote))
-                    .then(async ()=>{
-                        await dispatch(getUserNotes(userId))
-                    })
-                await dispatch(getUserNotes(userId))
-                    .then((res)=>{console.log(res)})
-            })
-
-    }
     return(
 
         <Grid element
@@ -116,7 +115,6 @@ function Column3() {
             </Grid>
 
 
-            {/*<DeleteDialog {...deletingNote}/>*/}
 
         </Grid>
 

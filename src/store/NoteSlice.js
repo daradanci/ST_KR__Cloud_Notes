@@ -1,124 +1,64 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
-import {IP4, LoadingStatus, SuccessStatus, ErrorStatus} from "./pref";
-
-async function fetchJSON(url, options) {
-    let response = await fetch(url, options);
-    if (!response.ok) {
-        throw new Error(`status code ${response.status}`);
-    }
-    return response.json();
-}
+import { LoadingStatus, SuccessStatus, ErrorStatus } from "./pref";
+import { addNoteToDB, getNotesFromDB, updateNoteInDB, deleteNoteFromDB } from "./db";
 
 export const getUserNotes = createAsyncThunk(
     'notes/getUserNotes',
     async (userId) => {
-        const requestOptions = {
-            headers: { 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
-            },
-        };
-        const response = await axios.get(`${IP4}notes/${userId}`, requestOptions);
-        return response.data.data
+        console.log(`📌 Получаем заметки для userId:`, userId);
+        const notes = await getNotesFromDB(userId);
+        console.log(`📌 Найдено ${notes.length} заметок:`, notes);
+        return notes;
     }
-)
+);
+
 
 
 export const addNote = createAsyncThunk(
     'notes/addNote',
     async (note) => {
-        return await fetchJSON(
-            `${IP4}notes`,
-            {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json;charset=utf-8',
-                    'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
-                },
-                body: JSON.stringify({
-                    user: note.user,
-                    title: note.title,
-                    content: note.content
-                })
-            }
-        )
-            // .then(
-            //     (data) => data.json()
-            // )
+        await addNoteToDB(note);
+        return note;
     }
-)
-
-
+);
 
 export const editNote = createAsyncThunk(
     'notes/editNote',
     async (note) => {
-        return await fetchJSON(
-            `${IP4}notes/edit`,
-            {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json;charset=utf-8',
-                    'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
-                },
-                body: JSON.stringify({
-                    user: note.user,
-                    title: note.title,
-                    content: note.content,
-                    old_title: note.old_title,
-                    date:note.date,
-                })
-            }
-        )
-            // .then(
-            //     (data) => data.json()
-            // )
+        await updateNoteInDB(note);
+        return note;
     }
-)
-
+);
 
 export const deleteNote = createAsyncThunk(
     'notes/deleteNote',
     async (note) => {
-        return await fetchJSON(
-            `${IP4}notes/delete`,
-            {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json;charset=utf-8',
-                    'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
-                },
-                body: JSON.stringify({
-                    user: note.user,
-                    title: note.title,
-                })
-            }
-        )
-            // .then(
-            //     (data) => data.json()
-            // )
+        console.log(`📌 Удаляем заметку:`, note);
+        await deleteNoteFromDB(note.title, note.userId); 
+        return note;
     }
-)
+);
+
 export const noteSlice = createSlice({
     name: "noteSlice",
     initialState: {
-        notes:[],
-        noteStatus:'',
-        currentNote:{title:'', content:'', date:''},
-        deletingNote:{title:'', content:'', date:''},
-        oldTitle:'',
+        notes: [],
+        noteStatus: '',
+        currentNote: { title: '', content: '', date: '' },
+        deletingNote: { title: '', content: '', date: '' },
+        oldTitle: '',
     },
     reducers: {
-        clearNotes: (state, action) => {
-            state.notes=[]
-            state.noteStatus=''
-            state.currentNote={title:'', content:'', date:''}
-            state.deletingNote={title:'', content:'', date:''}
-            state.oldTitle=''
-            localStorage.clear()
+        clearNotes: (state) => {
+            state.notes = [];
+            state.noteStatus = '';
+            state.currentNote = { title: '', content: '', date: '' };
+            state.deletingNote = { title: '', content: '', date: '' };
+            state.oldTitle = '';
+            localStorage.clear();
         },
         setNotes: (state, action) => {
-            state.notes=action.payload
+            state.notes = action.payload;
         },
         setCurrentNote: (state, action) => {
             state.currentNote = action.payload;
@@ -129,62 +69,58 @@ export const noteSlice = createSlice({
         setOldTitle: (state, action) => {
             state.oldTitle = action.payload;
         },
-
     },
     extraReducers: (builder) => {
         builder
-            .addCase(getUserNotes.pending, (state, action) => {
-                state.noteStatus=LoadingStatus
+            .addCase(getUserNotes.pending, (state) => {
+                state.noteStatus = LoadingStatus;
             })
             .addCase(getUserNotes.fulfilled, (state, action) => {
-                state.noteStatus = SuccessStatus
-                state.notes=action.payload
-                state.currentNote=state.notes[0]
-                state.oldTitle=state.notes[0]["title"]
-                // let _notes=[]
-                // for (let i=0; i<state.notes.length; i++){
-                //     // console.log(state.notes[i])
-                //     _notes.push((state.notes[i]))
-                // }
-                localStorage.setItem('notes',JSON.stringify(state.notes))
-
+                state.noteStatus = SuccessStatus;
+                state.notes = action.payload || [];
+                state.currentNote = state.notes[0] || { title: '', content: '', date: '' };
+                state.oldTitle = state.currentNote.title || '';
+                localStorage.setItem('notes', JSON.stringify(state.notes));
             })
-            .addCase(getUserNotes.rejected, (state, action) => {
-                state.noteStatus=LoadingStatus
-                state.notes=JSON.parse(localStorage.getItem('notes'))
+            .addCase(getUserNotes.rejected, (state) => {
+                state.noteStatus = ErrorStatus;
+                state.notes = JSON.parse(localStorage.getItem('notes')) || [];
             })
-            .addCase(addNote.pending, (state, action) => {
-                state.noteStatus=LoadingStatus
+            .addCase(addNote.pending, (state) => {
+                state.noteStatus = LoadingStatus;
             })
             .addCase(addNote.fulfilled, (state, action) => {
-                state.noteStatus = SuccessStatus
+                state.noteStatus = SuccessStatus;
+                state.notes.push(action.payload);
             })
-            .addCase(addNote.rejected, (state, action) => {
-                state.noteStatus=LoadingStatus
+            .addCase(addNote.rejected, (state) => {
+                state.noteStatus = ErrorStatus;
             })
-            .addCase(editNote.pending, (state, action) => {
-                state.noteStatus=LoadingStatus
+            .addCase(editNote.pending, (state) => {
+                state.noteStatus = LoadingStatus;
             })
             .addCase(editNote.fulfilled, (state, action) => {
-                state.noteStatus = SuccessStatus
+                state.noteStatus = SuccessStatus;
+                const index = state.notes.findIndex(note => note.title === action.payload.old_title);
+                if (index !== -1) {
+                    state.notes[index] = action.payload;
+                }
             })
-            .addCase(editNote.rejected, (state, action) => {
-                state.noteStatus=LoadingStatus
+            .addCase(editNote.rejected, (state) => {
+                state.noteStatus = ErrorStatus;
             })
-            .addCase(deleteNote.pending, (state, action) => {
-                state.noteStatus=LoadingStatus
+            .addCase(deleteNote.pending, (state) => {
+                state.noteStatus = LoadingStatus;
             })
             .addCase(deleteNote.fulfilled, (state, action) => {
-                state.noteStatus = SuccessStatus
+                state.noteStatus = SuccessStatus;
+                state.notes = state.notes.filter(note => note.title !== action.payload.title);
             })
-            .addCase(deleteNote.rejected, (state, action) => {
-                state.noteStatus=LoadingStatus
-            })
-
+            .addCase(deleteNote.rejected, (state) => {
+                state.noteStatus = ErrorStatus;
+            });
     }
+});
 
-
-})
-
-export const {clearNotes, setNotes,setCurrentNote,setDeletingNote,setOldTitle}=noteSlice.actions;
+export const { clearNotes, setNotes, setCurrentNote, setDeletingNote, setOldTitle } = noteSlice.actions;
 export default noteSlice.reducer;

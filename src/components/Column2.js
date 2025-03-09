@@ -4,7 +4,6 @@ import SaveAsSharpIcon from '@mui/icons-material/SaveAsSharp';
 import {useDispatch, useSelector} from "react-redux";
 import {addNote, editNote, getUserNotes, setCurrentNote, setOldTitle} from "../store/NoteSlice";
 import {useEffect, useState} from "react";
-import {getUser, refreshUser} from "../store/UserSlice";
 
 function Column2() {
     const dispatch = useDispatch();
@@ -12,29 +11,37 @@ function Column2() {
     const {username} = useSelector((state) => state.username);
     const {currentNote} = useSelector((state) => state.currentNote);
     const {oldTitle} = useSelector((state) => state.oldTitle);
-    const {notes} = useSelector((state) => state.notes);
     const [formTitle, setFormTitle] = useState(currentNote.title);
     const [formContent, setFormContent] = useState(currentNote.content);
 
-    const handleUpdate=async (event)=>{
-        let updatedCurrentNote={title:formTitle, content:formContent, date:currentNote.date, user:username, old_title:oldTitle}
-        console.log(updatedCurrentNote)
-            await dispatch(refreshUser())
-                .then(async()=>{
-                    await dispatch(editNote(updatedCurrentNote))
-                        .then(async ()=>{
-                                await dispatch(getUserNotes(userId))
-                        })
-                })
-    }
+    const handleUpdate = async () => {
+        if (!userId) {
+            console.error("❌ Ошибка: userId отсутствует");
+            return;
+        }
+    
+        let updatedCurrentNote = {
+            title: formTitle,
+            content: formContent,
+            date: currentNote.date,
+            userId,
+            old_title: oldTitle
+        };
+    
+        try {
+            await dispatch(editNote(updatedCurrentNote));
+            await dispatch(getUserNotes(userId));
+            console.log("✅ Заметка успешно обновлена:", updatedCurrentNote);
+        } catch (error) {
+            console.error("❌ Ошибка при обновлении заметки:", error);
+        }
+    };
+    
 
     useEffect(() => {
-        const updateFormValues = async () => {
-            setFormTitle(currentNote.title)
-            setFormContent(currentNote.content)
-        }
-        updateFormValues()
-    }, [currentNote])
+        setFormTitle(currentNote.title);
+        setFormContent(currentNote.content);
+    }, [currentNote]);
     return(
         <Grid element
               // xs={6}
@@ -86,9 +93,6 @@ function Column2() {
                           }}
                           onChange={async(e)=>{
                               e.preventDefault();
-                              // let updatedCurrentNote=currentNote
-                              // updatedCurrentNote['title']=e.target.value
-                              // await dispatch(setCurrentNote(updatedCurrentNote))
                               setFormTitle(e.target.value)
                           }}
                           value={formTitle}
@@ -118,9 +122,6 @@ function Column2() {
                       }}
                       onChange={async(e)=>{
                               e.preventDefault();
-                              // let updatedCurrentNote=currentNote
-                              // updatedCurrentNote['content']=e.target.value
-                              // await dispatch(setCurrentNote(updatedCurrentNote))
                                 setFormContent(e.target.value)
                           }}
                       value={formContent}
