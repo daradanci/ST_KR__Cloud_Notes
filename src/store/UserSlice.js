@@ -68,6 +68,9 @@ export const userSlice = createSlice({
         updatePassword: (state, action) => {
             state.password = action.payload;
         },
+        resetUserStatus: (state) => {
+            state.userStatus = "";
+        },
         openAlert: (state) => {
             state.alertOpen = true;
         },
@@ -124,5 +127,5 @@ export const userSlice = createSlice({
     }
 });
 
-export const { exit, updateUsername, updatePassword, openAlert, closeAlert, openDeleteDialog, closeDeleteDialog } = userSlice.actions;
+export const { exit, updateUsername, updatePassword, resetUserStatus, openAlert, closeAlert, openDeleteDialog, closeDeleteDialog } = userSlice.actions;
 export default userSlice.reducer;

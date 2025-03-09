@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import {Label} from "@mui/icons-material";
 import MainTitle from "../components/MainTitle";
-import {addUser, authUser, closeAlert, getUser, openAlert} from "../store/UserSlice";
+import {addUser, authUser, closeAlert, getUser, openAlert, resetUserStatus} from "../store/UserSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {ErrorStatus, LoadingStatus, SuccessStatus} from "../store/pref";
 import AlertDialog from "../components/AlertDialog";
@@ -28,46 +28,41 @@ function LoginPage() {
     const {alertOpen} = useSelector((state) => state.alertOpen);
 
 
-    const handleSubmit = async(event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-            console.log({
-            username: data.get('username'),
-            password: data.get('password'),
-        });
+    
         await dispatch(authUser({
-               username:data.get('username'),
-               password:data.get('password'),
-           })
-        )
-            .then(async(res)=>{
-                await dispatch(getUser())
-            })
+            username: data.get("username"),
+            password: data.get("password")
+        }));
+    
+        dispatch(resetUserStatus());
     };
+    
 
     useEffect(() => {
-        const alerting = async() => {
-            switch (userStatus){
+        console.log("🔹 useEffect сработал, userStatus:", userStatus);
+        const alerting = async () => {
+            switch (userStatus) {
                 case ErrorStatus:
-                    setAlertMessage({type:ErrorStatus, title:'Ошибка', text:userError, mode:'logging'})
+                    setAlertMessage({ type: ErrorStatus, title: "Ошибка", text: userError, mode: "logging" });
                     await dispatch(openAlert());
                     break;
                 case SuccessStatus:
-                    setAlertMessage({type:SuccessStatus, title:'Готово!', text:'Вы успешно вошли.', mode:'logging'})
+                    setAlertMessage({ type: SuccessStatus, title: "Готово!", text: "Вы успешно вошли.", mode: "logging" });
                     await dispatch(openAlert());
                     break;
                 case LoadingStatus:
-                    setAlertMessage({type:LoadingStatus, title:'Загрузка', text:'', mode:'logging'})
+                    setAlertMessage({ type: LoadingStatus, title: "Загрузка", text: "", mode: "logging" });
                     await dispatch(openAlert());
                     break;
-                default:
-                    setAlertMessage({type:'', title:'', text:''})
-                    await dispatch(closeAlert())
-                    break;
             }
-        }
-        alerting()
-    },[userStatus])
+        };
+    
+        alerting();
+    }, [userStatus, dispatch]);
+    
     return(
     <>
         <MainTitle/>

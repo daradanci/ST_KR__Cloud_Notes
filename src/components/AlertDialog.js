@@ -9,7 +9,7 @@ import {
     DialogTitle, Grid
 } from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
-import {closeAlert, openAlert} from "../store/UserSlice";
+import {closeAlert, openAlert, resetUserStatus} from "../store/UserSlice";
 import {ErrorStatus, LoadingStatus, SuccessStatus} from "../store/pref";
 
 export default function AlertDialog(message) {
@@ -31,10 +31,12 @@ export default function AlertDialog(message) {
     next_page();
 }, []);
 
-  const handleClose = async() => {
-      await dispatch(closeAlert())
-      message.type=""
-  };
+const handleClose = async () => {
+    await dispatch(closeAlert());  
+    await dispatch(resetUserStatus());  
+    // message.type = "";
+};
+
 
   return (
     <div>

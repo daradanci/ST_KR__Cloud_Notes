@@ -15,7 +15,7 @@ import {
 import MainTitle from "../components/MainTitle";
 import {useEffect, useState} from "react";
 import {useSelector, useDispatch} from "react-redux";
-import {addUser, closeAlert, openAlert} from "../store/UserSlice";
+import {addUser, closeAlert, openAlert, resetUserStatus} from "../store/UserSlice";
 import {ErrorStatus, LoadingStatus, SuccessStatus} from "../store/pref";
 import AlertDialog from "../components/AlertDialog";
 
@@ -27,51 +27,45 @@ function RegisterPage() {
     const { userStatus} = useSelector((state) => state.userStatus);
     const { userError} = useSelector((state) => state.userError);
 
-    const handleSubmit =async (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-            console.log({
-            username: data.get('username'),
-            password: data.get('password'),
-            password2: data.get('password2'),
-        });
-            if (data.get('password')===data.get('password2')){
-                await dispatch(addUser({
-                       username:data.get('username'),
-                       password:data.get('password'),
-                   }))
-                    .catch(async(err)=>{
-                        setAlertMessage({type:ErrorStatus, title:'Ошибка', text:userError, mode:'registering'})
-                        await dispatch(openAlert());
-                    })
-            }
+    
+        if (data.get("password") === data.get("password2")) {
+            await dispatch(addUser({
+                username: data.get("username"),
+                password: data.get("password")
+            }));
+    
+            dispatch(resetUserStatus());
+        }
     };
-
+    
     useEffect(() => {
-        const alerting = async() => {
-            switch (userStatus){
+        console.log("🔹 useEffect сработал, userStatus:", userStatus);
+    
+        const alerting = async () => {
+            switch (userStatus) {
                 case ErrorStatus:
-                    setAlertMessage({type:ErrorStatus, title:'Ошибка', text:userError, mode:'registering'})
+                    setAlertMessage({ type: ErrorStatus, title: "Ошибка", text: userError, mode: "registering" });
                     await dispatch(openAlert());
                     break;
                 case SuccessStatus:
-                    setAlertMessage({type:SuccessStatus, title:'Готово!', text:'Аккаунт успешно создан.', mode:'registering'})
+                    setAlertMessage({ type: SuccessStatus, title: "Готово!", text: "Аккаунт успешно создан.", mode: "registering" });
                     await dispatch(openAlert());
                     break;
                 case LoadingStatus:
-                    setAlertMessage({type:LoadingStatus, title:'Загрузка', text:'', mode:'registering'})
+                    setAlertMessage({ type: LoadingStatus, title: "Загрузка", text: "", mode: "registering" });
                     await dispatch(openAlert());
                     break;
-                default:
-                    setAlertMessage({type:'', title:'', text:''})
-                    await dispatch(closeAlert())
-                    break;
             }
-        }
-        alerting()
-    },[userStatus])
-
-
+        };
+    
+        alerting();
+    }, [userStatus, dispatch]);
+    
+    
+    
     return(
         <>
             <MainTitle/>
