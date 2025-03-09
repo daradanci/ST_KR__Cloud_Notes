@@ -1,5 +1,5 @@
 import './App.css';
-import { HashRouter as BrowserRouter, Route, Link, Routes} from "react-router-dom";
+import { BrowserRouter, Route, Link, Routes} from "react-router-dom";
 import DocumentTitle from 'react-document-title'
 import UnauthorizedPage from "./pages/UnauthorizedPage";
 import MainTitle from "./components/MainTitle";
@@ -20,7 +20,6 @@ function App() {
                     <Route exact path={'/register'} element={<RegisterPage/>}/>
                     <Route exact path={'/notes'} element={<MainPage/>}/>
                 </Routes>
-
             </Container>
         </BrowserRouter>
   );
