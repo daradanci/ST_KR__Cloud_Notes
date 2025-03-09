@@ -26,9 +26,7 @@ function RegisterPage() {
     const [alertMessage, setAlertMessage] = useState({});
     const { userStatus} = useSelector((state) => state.userStatus);
     const { userError} = useSelector((state) => state.userError);
-    function handleClick() {
-        navigate('#notes');
-    }
+
     const handleSubmit =async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
