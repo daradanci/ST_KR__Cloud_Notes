@@ -1,5 +1,5 @@
 import './App.css';
-import { HashRouter as Router, Route, Link, Routes} from "react-router-dom";
+import { BrowserRouter, Route, Link, Routes} from "react-router-dom";
 import DocumentTitle from 'react-document-title'
 import UnauthorizedPage from "./pages/UnauthorizedPage";
 import MainTitle from "./components/MainTitle";
@@ -9,20 +9,19 @@ import MainPage from "./pages/MainPage";
 import {Container, CssBaseline, Paper, Typography} from "@mui/material";
 
 function App() {
-  return (
-        <Router basename="/ST_KR__Cloud_Notes" >
-            <Container
-                maxWidth={false} disableGutters
-            >
-                <Routes>
-                    <Route exact path={'/'} element={<UnauthorizedPage/>}/>
-                    <Route exact path={'/login'} element={<LoginPage/>}/>
-                    <Route exact path={'/register'} element={<RegisterPage/>}/>
-                    <Route exact path={'/notes'} element={<MainPage/>}/>
-                </Routes>
-            </Container>
-        </Router>
-  );
-}
+    return (
+          <BrowserRouter basename="/ST_KR__Cloud_Notes">
+              <Container maxWidth={false} disableGutters>
+                  <Routes>
+                      <Route exact path="/" element={<UnauthorizedPage />} />
+                      <Route exact path="/login" element={<LoginPage />} />
+                      <Route exact path="/register" element={<RegisterPage />} />
+                      <Route exact path="/notes" element={<MainPage />} />
+                  </Routes>
+              </Container>
+          </BrowserRouter>
+    );
+  }
+  
 
 export default App;
