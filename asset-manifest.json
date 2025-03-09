@@ -1,0 +1,20 @@
+{
+  "files": {
+    "main.css": "/ST_KR__Cloud_Notes/static/css/main.6d67ef79.css",
+    "main.js": "/ST_KR__Cloud_Notes/static/js/main.c5c5bb54.js",
+    "static/js/787.9243050f.chunk.js": "/ST_KR__Cloud_Notes/static/js/787.9243050f.chunk.js",
+    "static/media/zh-cn.ttf": "/ST_KR__Cloud_Notes/static/media/zh-cn.54a8212866e6ec1b1003.ttf",
+    "static/media/clouds2B.jpg": "/ST_KR__Cloud_Notes/static/media/clouds2B.39fa490f03d3c6178d1c.jpg",
+    "static/media/NunitoSans-Bold.ttf": "/ST_KR__Cloud_Notes/static/media/NunitoSans-Bold.022586a78ea7c9bee9da.ttf",
+    "static/media/NunitoSans-ExtraLight.ttf": "/ST_KR__Cloud_Notes/static/media/NunitoSans-ExtraLight.1925a08bd6e9cc6486f6.ttf",
+    "static/media/paimon.png": "/ST_KR__Cloud_Notes/static/media/paimon.2044e728fc2c11b534b9.png",
+    "index.html": "/ST_KR__Cloud_Notes/index.html",
+    "main.6d67ef79.css.map": "/ST_KR__Cloud_Notes/static/css/main.6d67ef79.css.map",
+    "main.c5c5bb54.js.map": "/ST_KR__Cloud_Notes/static/js/main.c5c5bb54.js.map",
+    "787.9243050f.chunk.js.map": "/ST_KR__Cloud_Notes/static/js/787.9243050f.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.6d67ef79.css",
+    "static/js/main.c5c5bb54.js"
+  ]
+}
