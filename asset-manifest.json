@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/ST_KR__Cloud_Notes/static/css/main.6d67ef79.css",
-    "main.js": "/ST_KR__Cloud_Notes/static/js/main.1a66afac.js",
+    "main.js": "/ST_KR__Cloud_Notes/static/js/main.3b56f07e.js",
     "static/js/787.9243050f.chunk.js": "/ST_KR__Cloud_Notes/static/js/787.9243050f.chunk.js",
     "static/media/zh-cn.ttf": "/ST_KR__Cloud_Notes/static/media/zh-cn.54a8212866e6ec1b1003.ttf",
     "static/media/clouds2B.jpg": "/ST_KR__Cloud_Notes/static/media/clouds2B.39fa490f03d3c6178d1c.jpg",
@@ -10,11 +10,11 @@
     "static/media/paimon.png": "/ST_KR__Cloud_Notes/static/media/paimon.2044e728fc2c11b534b9.png",
     "index.html": "/ST_KR__Cloud_Notes/index.html",
     "main.6d67ef79.css.map": "/ST_KR__Cloud_Notes/static/css/main.6d67ef79.css.map",
-    "main.1a66afac.js.map": "/ST_KR__Cloud_Notes/static/js/main.1a66afac.js.map",
+    "main.3b56f07e.js.map": "/ST_KR__Cloud_Notes/static/js/main.3b56f07e.js.map",
     "787.9243050f.chunk.js.map": "/ST_KR__Cloud_Notes/static/js/787.9243050f.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.6d67ef79.css",
-    "static/js/main.1a66afac.js"
+    "static/js/main.3b56f07e.js"
   ]
 }
