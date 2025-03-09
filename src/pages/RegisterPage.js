@@ -27,7 +27,7 @@ function RegisterPage() {
     const { userStatus} = useSelector((state) => state.userStatus);
     const { userError} = useSelector((state) => state.userError);
     function handleClick() {
-        navigate('/notes');
+        navigate('#notes');
     }
     const handleSubmit =async (event) => {
         event.preventDefault();

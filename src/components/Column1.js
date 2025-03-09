@@ -91,7 +91,7 @@ function Column1() {
 
                     <IconButton sx={{}}
                         target="_blank"
-                        href="https://github.com/Eaglise/ST_KR__Cloud_Notes/"
+                        href="#"
                         >
                             <GitHubIcon sx={{
                                 color:'text.text2', fontSize:'200%',

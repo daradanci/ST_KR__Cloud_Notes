@@ -41,10 +41,6 @@ function LoginPage() {
         )
             .then(async(res)=>{
                 await dispatch(getUser())
-                // localStorage.setItem('userId',res.payload.data.id )
-                // console.log('RES')
-                // console.log(res)
-
             })
     };
 
@@ -159,7 +155,7 @@ function LoginPage() {
                 </Button>
 
 
-                    <Link variant="body2" href={process.env.PUBLIC_URL + "/register"}
+                    <Link variant="body2" href={"#/register"}
                     sx={{color:'white'}}
                     >
                             {"Нет аккаунта."}

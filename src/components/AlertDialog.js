@@ -21,10 +21,10 @@ export default function AlertDialog(message) {
   useEffect(() => {
     const next_page = async () => {
         if (message.mode === "logging") {
-            setPath(`${window.location.origin}${process.env.PUBLIC_URL}/notes`);
+            setPath(`#notes`);
         }
         if (message.mode === "registering") {
-            setPath(`${window.location.origin}${process.env.PUBLIC_URL}/log`);
+            setPath(`#log`);
         }
     };
 
@@ -86,14 +86,14 @@ export default function AlertDialog(message) {
                       <DialogActions>
                           { message.mode==="logging" &&
                               <Button
-                          onClick={handleClose} href={process.env.PUBLIC_URL + "/notes"}
+                          onClick={handleClose} href={"#notes"}
                           color="primary" autoFocus>
                           ок
                           </Button>
                           }
                           { message.mode==="registering" &&
                               <Button
-                          onClick={handleClose} href={process.env.PUBLIC_URL + "/login"}
+                          onClick={handleClose} href={"#login"}
                           color="primary" autoFocus>
                           ок
                           </Button>
