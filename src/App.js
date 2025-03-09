@@ -1,5 +1,5 @@
 import './App.css';
-import { BrowserRouter, Route, Link, Routes} from "react-router-dom";
+import { HashRouter as BrowserRouter, Route, Link, Routes} from "react-router-dom";
 import DocumentTitle from 'react-document-title'
 import UnauthorizedPage from "./pages/UnauthorizedPage";
 import MainTitle from "./components/MainTitle";
@@ -22,8 +22,6 @@ function App() {
                 </Routes>
 
             </Container>
-
-
         </BrowserRouter>
   );
 }
