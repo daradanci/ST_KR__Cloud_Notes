@@ -10,16 +10,16 @@ import {Container, CssBaseline, Paper, Typography} from "@mui/material";
 
 function App() {
     return (
-          <Router basename="/ST_KR__Cloud_Notes">
-              <Container maxWidth={false} disableGutters>
-                  <Routes>
-                      <Route exact path="/" element={<UnauthorizedPage />} />
-                      <Route exact path="/login" element={<LoginPage />} />
-                      <Route exact path="/register" element={<RegisterPage />} />
-                      <Route exact path="/notes" element={<MainPage />} />
-                  </Routes>
-              </Container>
-          </Router>
+        <Router>
+        <Container maxWidth={false} disableGutters>
+            <Routes>
+                <Route exact path="/" element={<UnauthorizedPage />} />
+                <Route exact path="/login" element={<LoginPage />} />
+                <Route exact path="/register" element={<RegisterPage />} />
+                <Route exact path="/notes" element={<MainPage />} />
+            </Routes>
+        </Container>
+    </Router>
     );
   }
   
