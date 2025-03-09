@@ -1,5 +1,5 @@
 import './App.css';
-import { BrowserRouter, Route, Link, Routes} from "react-router-dom";
+import { HashRouter as Router, Route, Link, Routes} from "react-router-dom";
 import DocumentTitle from 'react-document-title'
 import UnauthorizedPage from "./pages/UnauthorizedPage";
 import MainTitle from "./components/MainTitle";
@@ -10,7 +10,7 @@ import {Container, CssBaseline, Paper, Typography} from "@mui/material";
 
 function App() {
   return (
-        <BrowserRouter basename="/ST_KR__Cloud_Notes" >
+        <Router basename="/ST_KR__Cloud_Notes" >
             <Container
                 maxWidth={false} disableGutters
             >
@@ -21,7 +21,7 @@ function App() {
                     <Route exact path={'/notes'} element={<MainPage/>}/>
                 </Routes>
             </Container>
-        </BrowserRouter>
+        </Router>
   );
 }
 
